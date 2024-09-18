@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BUYNOW</title>
+    <script>
+        function confirmDelete(userId) {
+            if (confirm("Deseja mesmo excluir o cadastro?")) {
+                window.location.href = '/delete/' + userId;
+            }
+        }
+    </script>
 </head>
 <body>
 
@@ -34,6 +41,7 @@
         {% for user in users %}
             <li>ID: {{ user.id }} - Nome: {{ user.username }} 
                 <a href="/edit/{{ user.id }}">| Editar</a>
+                <a href="#" onclick="confirmDelete({{ user.id }})">| Excluir</a>
             </li>
         {% endfor %}
     </ul>

@@ -1,20 +1,23 @@
-# Usar uma imagem base do Python 3.9 slim
+# Usar uma imagem Python como base
 FROM python:3.9-slim
 
-# Definir o diretório de trabalho dentro do container
+# Definir o diretório de trabalho
 WORKDIR /app
 
-# Copiar o arquivo requirements.txt para o container
+# Copiar o requirements.txt para o container
 COPY requirements.txt .
 
-# Instalar as dependências do projeto
+# Instalar as dependências
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copiar o código da aplicação para o container
+# Copiar o restante do código para o diretório de trabalho do container
 COPY . .
 
-# Expor a porta 5000 para o Flask
+# Definir a variável de ambiente para garantir que a saída de log do Flask seja visível
+ENV PYTHONUNBUFFERED=1
+
+# Expor a porta que será usada pelo Flask
 EXPOSE 5000
 
-# Comando para rodar a aplicação
+# Comando para iniciar a aplicação
 CMD ["python", "app.py"]
