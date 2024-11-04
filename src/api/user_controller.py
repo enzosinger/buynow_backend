@@ -26,11 +26,16 @@ def update_user(user_id):
     username = data.get('username')
     password = data.get('password')
 
-    if not username or not password:
-        return jsonify({'error': 'Username and password are required'}), 400
+    # Verificar se pelo menos um dos campos foi fornecido
+    if not username and not password:
+        return jsonify({'error': 'Username or password must be provided'}), 400
 
+    # Chamar o serviço para atualização
     result = user_service.update_user(user_id, username, password)
-    return jsonify(result), (200 if 'message' in result else 404)
+    if 'error' in result:
+        return jsonify(result), 404
+
+    return jsonify(result), 200
 
 @user_controller.route('/users/<int:user_id>', methods=['DELETE'])
 def delete_user(user_id):

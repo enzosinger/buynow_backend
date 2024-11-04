@@ -27,19 +27,25 @@ def get_all_users():
 
 
 # Função para atualizar um usuário
-def update_user(user_id, username, password):
+def update_user(user_id, username=None, password=None):
     user = user_repository.find_by_id(user_id)
     if not user:
         return {'error': 'Usuário não encontrado!'}
 
-    hashed_password = generate_password_hash(password)
-    updated_user = {
-        'username': username,
-        'password': hashed_password
-    }
+    updated_user = {}
 
-    user_repository.update(user_id, updated_user)
-    return {'message': 'Usuário atualizado com sucesso!'}
+    # Adicionar os campos ao dicionário de atualização apenas se eles forem fornecidos
+    if username:
+        updated_user['username'] = username
+    if password:
+        updated_user['password'] = generate_password_hash(password)
+
+    # Apenas realizar a atualização se houver algo para atualizar
+    if updated_user:
+        user_repository.update(user_id, updated_user)
+        return {'message': 'Usuário atualizado com sucesso!'}
+    else:
+        return {'error': 'Nada para atualizar'}
 
 
 # Função para deletar um usuário
