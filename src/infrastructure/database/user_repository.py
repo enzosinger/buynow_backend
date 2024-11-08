@@ -4,9 +4,9 @@ from src.core.interfaces import IUserRepository
 
 class UserRepository(IUserRepository):
     def __init__(self):
-        mongo_uri = os.getenv('MONGO_URI', 'mongodb://localhost:27017/buynow_usuarios')
+        mongo_uri = os.getenv('MONGO_URI', 'mongodb+srv://buynowadmin:Enzosinger123!@buynow.fddwc.mongodb.net/?retryWrites=true&w=majority&appName=buynow')
         client = MongoClient(mongo_uri)
-        self.db = client.get_database()
+        self.db = client.get_database('buynow')  # Nome do banco de dados no Atlas
 
         # Inicializar o contador, se necessário
         if self.db.counters.find_one({'_id': 'usuarios'}) is None:
